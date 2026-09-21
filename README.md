@@ -63,3 +63,10 @@ src/pages/Home.jsx           Pantalla minima post-login
 
 docker compose up -d
 
+
+## Tener en cuenta previa a la ejecución en Java e uso del framework React
+
+Ejecutar React + JS mediante los comando clásico de npm install, npm run dev
+
+Ejecutar el backend utilizando IntelliJ Idea utilizando el archivo pom.xml
+
