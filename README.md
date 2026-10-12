@@ -114,59 +114,17 @@ src/pages/Home.jsx           Pantalla minima post-login
 ```bash
 cd frontend
 npm install
-cp .env.example .env   # ajustar VITE_API_BASE_URL si hace falta
 npm run dev
 ```
 
-Abre `http://localhost:5173`. El backend debe estar corriendo en `:8080`
-(CORS ya esta habilitado para ese origen en `CorsConfig`).
 
-## Correrlo en Windows
+## Correrlo
 
-El proyecto es igual de multiplataforma (Docker, Maven, IntelliJ y Node son
-los mismos en Windows/Mac/Linux). Solo cambian dos comandos de terminal:
-
-**Requisitos:** Docker Desktop (con WSL2 activado), JDK 17+, IntelliJ IDEA,
-Node.js LTS. Los comandos de abajo funcionan igual en PowerShell y en CMD.
-
-```powershell
-# Backend: levantar Postgres (igual que en Mac/Linux)
+# Backend: levantar Postgres
 cd backend
 docker compose up -d
 
 # Frontend
 cd frontend
 npm install
-copy .env.example .env    REM en PowerShell: Copy-Item .env.example .env
 npm run dev
-```
-
-Nota: `application.properties` ya usa `127.0.0.1` en vez de `localhost` para
-la URL JDBC (`db.url`) — esto evita un problema conocido de Docker Desktop
-con IPv6 que puede colgar la conexion a la base de datos en cualquier
-sistema operativo, asi que no hace falta tocar nada ahi para Windows.
-
-Si el puerto `5432` u `8080` ya estan ocupados por otro proceso (mismo
-sintoma que en Mac: `docker compose up` falla o el backend se queda
-"colgado" sin responder), revisa que los este usando con:
-
-```powershell
-netstat -ano | findstr :5432
-netstat -ano | findstr :8080
-```
-
-y cierra el proceso correspondiente, o cambia el puerto del host en
-`docker-compose.yml` (ej. `"5433:5432"`) y en `db.url` de
-`application.properties`, tal como se hizo aqui.
-
-## Notas
-
-- Las contrasenas se guardan siempre con hash BCrypt (`spring-security-crypto`),
-  nunca en texto plano.
-- El "envio de correo" de recuperacion de contrasena esta simulado: el
-  backend genera un JWT de corta vida (15 min) y lo registra en el log; el
-  endpoint tambien lo devuelve en la respuesta (`enlaceDemo`) solo para poder
-  probar el flujo completo sin un servidor SMTP real.
-- El cierre de sesion es responsabilidad del cliente: al ser JWT sin estado,
-  no hay nada que invalidar en el servidor en este sprint (se documenta en
-  `AuthController.usuarioActual` y en `AuthContext.cerrarSesion`).
